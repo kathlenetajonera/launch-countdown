@@ -2,23 +2,39 @@ const daysText = document.querySelector("#days");
 const hoursText = document.querySelector("#hours");
 const minutesText = document.querySelector("#minutes");
 const secondsText = document.querySelector("#seconds");
+let countdown = {
+    days: 13,
+    hours: 23, 
+    minutes: 59,
+    seconds: 59 
+};
 
-updateTime();
+updateCountdown();
+setInterval(updateCountdown, 1000)
 
-setInterval(updateTime, 1000);
+function updateCountdown() {
+    if (countdown.seconds > 0) {
+        countdown.seconds--;
+    } else {
+        countdown.seconds = 59;
+        countdown.minutes--;
+    }
 
-function updateTime() {
-    const countdownDate = new Date("Feb 24, 2021 12:00:00").getTime();
-    const currentDate = new Date().getTime();
-    const distance = countdownDate - currentDate;
+    if (countdown.minutes < 0) {
+        countdown.seconds = 59;
+        countdown.minutes = 59;
+        countdown.hours--;
+    }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    if (countdown.hours === 0) {
+        countdown.seconds = 59;
+        countdown.minutes = 59;
+        countdown.hours = 23;
+        countdown.days--;
+    }
 
-    daysText.textContent = days;
-    hoursText.textContent = hours;
-    minutesText.textContent = minutes;
-    secondsText.textContent = seconds;
+    daysText.textContent = countdown.days;
+    hoursText.textContent = countdown.hours;
+    minutesText.textContent = countdown.minutes;
+    secondsText.textContent = countdown.seconds;
 }
